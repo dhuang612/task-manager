@@ -12,8 +12,34 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client ) =
     }
     const db = client.db(databaseName)
 
-    db.collection('users').insertOne({
-        name: 'Dan',
-        age: 27
-    });
+    db.collection('tasks').insertMany([
+        {
+            description: 'Go buy groceries',
+            completed: true
+    }, {
+        description: 'Get toothpaste',
+        completed: false
+    },
+    {
+        description: 'Make more friends',
+        completed: false
+    }
+    ],(error, result) => {
+        if(error){
+            return console.log('could not insert new documents!');
+        }
+        console.log(result.ops);
+    })
 });
+
+
+/*
+Goal: insert 3 tasks into a new tasks collection
+
+use insertMany to insert three documents 
+    -description (string), completed (boolean) make some true and some false
+setup the callback to handle error or print ops
+Run the script
+refresh db and confimr the data is in task collection
+
+*/

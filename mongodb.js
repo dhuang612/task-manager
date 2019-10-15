@@ -1,6 +1,6 @@
 
-const mongodb = require('mongodb');
-const MongoClient = mongodb.MongoClient;
+const {MongoClient, ObjectID} = require('mongodb');
+
 
 connectionURL = 'mongodb://127.0.0.1:27018';
 const databaseName = 'task-manager'; 
@@ -11,35 +11,18 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client ) =
         return console.log('there was an error');
     }
     const db = client.db(databaseName)
-
-    db.collection('tasks').insertMany([
-        {
-            description: 'Go buy groceries',
-            completed: true
-    }, {
-        description: 'Get toothpaste',
-        completed: false
-    },
-    {
-        description: 'Make more friends',
-        completed: false
-    }
-    ],(error, result) => {
+//we need to use new
+    db.collection('users').findOne({_id : new ObjectID("5da5fd2e148474b454e9fcce")}, (error, id) => {
         if(error){
-            return console.log('could not insert new documents!');
+            return console.log('unable to connect')
         }
-        console.log(result.ops);
+        console.log(id)
+    })
+       
+    db.collection('tasks').find({completed: false}).toArray((error, completed) => {
+        if(error){
+            return console.log('unable to connect')
+        }
+        console.log(completed);
     })
 });
-
-
-/*
-Goal: insert 3 tasks into a new tasks collection
-
-use insertMany to insert three documents 
-    -description (string), completed (boolean) make some true and some false
-setup the callback to handle error or print ops
-Run the script
-refresh db and confimr the data is in task collection
-
-*/

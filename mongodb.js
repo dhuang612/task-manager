@@ -9,20 +9,11 @@ const databaseName = 'task-manager';
 MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client ) => {
     if(error){
         return console.log('there was an error');
-    }
+    } 
     const db = client.db(databaseName)
-//we need to use new
-    db.collection('users').findOne({_id : new ObjectID("5da5fd2e148474b454e9fcce")}, (error, id) => {
-        if(error){
-            return console.log('unable to connect')
-        }
-        console.log(id)
-    })
-       
-    db.collection('tasks').find({completed: false}).toArray((error, completed) => {
-        if(error){
-            return console.log('unable to connect')
-        }
-        console.log(completed);
-    })
+    db.collection('tasks').updateMany({completed: false}, {$set: {
+        completed: true
+    }}).then((result)=> {
+        console.log(result)
+    }).catch((error)=> {console.log(error)})
 });

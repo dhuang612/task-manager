@@ -11,9 +11,5 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client ) =
         return console.log('there was an error');
     } 
     const db = client.db(databaseName)
-    db.collection('tasks').updateMany({completed: false}, {$set: {
-        completed: true
-    }}).then((result)=> {
-        console.log(result)
-    }).catch((error)=> {console.log(error)})
+    db.collection("tasks").deleteOne({description: "Get toothpaste"}).then((result)=> {console.log(result)}).catch((error)=> {console.log(error)})
 });

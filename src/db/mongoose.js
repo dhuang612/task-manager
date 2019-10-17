@@ -3,6 +3,26 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb://127.0.0.1:27018/task-manager-api', {
     useNewUrlParser: true,
     useCreateIndex: true
+});
+
+const Tasks = mongoose.model('Tasks', {
+    description : {
+        type: String
+    },
+    completed: {
+        type: Boolean
+    }
+})
+
+const task = new Tasks({
+    description: 'Complete homework',
+    completed: false
+})
+
+task.save().then(() => {
+    console.log(task);
+}).catch((error) => {
+    console.log(error);
 })
 
 const User = mongoose.model('User', {

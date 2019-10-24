@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const Tasks = mongoose.model('Tasks', {
+const taskSchema =new mongoose.Schema({
     description : {
         type: String,
         required: true,
@@ -12,5 +12,17 @@ const Tasks = mongoose.model('Tasks', {
         required: false
     }
 })
+
+taskSchema.pre('save', async function (next) {
+    const task = this;
+    
+    if(task.isModified('description')){
+       console.log('task has been updated')
+    }
+
+    next();
+})
+
+const Tasks = mongoose.model('Tasks',taskSchema)
 
 module.exports = Tasks;

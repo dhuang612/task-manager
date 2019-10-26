@@ -14,10 +14,10 @@ const port = process.env.PORT || 3000;
 //     next();
 // })
 
-app.use((req, res, next)=> {
-    res.status(503).send('Currently in maintenance please check back later')
+// app.use((req, res, next)=> {
+//     res.status(503).send('Currently in maintenance please check back later')
   
-})
+// })
 
 
 app.use(express.json());

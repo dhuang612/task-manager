@@ -1,28 +1,20 @@
 const mongoose = require('mongoose');
 
-const taskSchema =new mongoose.Schema({
-    description : {
+const Task = mongoose.model('Task', {
+    description: {
         type: String,
         required: true,
         trim: true
     },
     completed: {
         type: Boolean,
-        default: false,
-        required: false
+        default: false
+    },
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'User'
     }
 })
 
-taskSchema.pre('save', async function (next) {
-    const task = this;
-    
-    if(task.isModified('description')){
-       console.log('task has been updated')
-    }
-
-    next();
-})
-
-const Tasks = mongoose.model('Tasks',taskSchema)
-
-module.exports = Tasks;
+module.exports = Task

@@ -37,7 +37,7 @@ router.get('/tasks/:id', auth, async (req, res) => {
         }
         res.send(task);
     }catch(e){
-        res.send(500).send();
+        res.send(500);
     }
 })
 

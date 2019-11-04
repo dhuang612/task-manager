@@ -1,4 +1,5 @@
 const express = require('express');
+
 // Connection to db
 require('./db/mongoose');
 const userRouter = require('./routers/user')

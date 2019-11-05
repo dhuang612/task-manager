@@ -3,4 +3,4 @@ mongodb.js
 node_modulesnode_modules/
 node_modules/
 
-.env
+dev.env

@@ -1,29 +1,11 @@
 const request = require('supertest');
-const jwt = require('jsonwebtoken');
-const mongoose = require('mongoose');
 //express setup for test suite
 const app = require('../src/app');
 //require in the user db
 const User = require('../src/models/user');
-//generates auth token
-const userOneId = new mongoose.Types.ObjectId()
+const {userOneId, userOne, setupDatabase} = require('./fixtures/db')
 
-const userOne = {
-    _id: userOneId,
-    name: "test user",
-    email: "testemail@email.com",
-    password: "Gr3enP@ss",
-    tokens: [{
-        token: jwt.sign({_id: userOneId}, process.env.JWT_SECRET)
-    }]
-}
-
-beforeEach(async () =>{
-    //clear the db
-    await User.deleteMany();
-    //create a user
-    await new User(userOne).save();
-})
+beforeEach(setupDatabase)
 
 test('Should signup a new user', async ()=>{
     //.post = the express route
@@ -115,6 +97,8 @@ test('Should update valid user fields', async () =>{
         .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
         .send({name: 'Dan'})
         .expect(200)
+    const user = await User.findById(userOneId)
+    expect(user.name).toEqual('Dan')    
 })
 
 test('Should not update invalid user fields', async () =>{

@@ -3,7 +3,7 @@ const request = require('supertest');
 const app = require('../src/app');
 //require in the user db
 const User = require('../src/models/user');
-const {userOneId, userOne, setupDatabase} = require('./fixtures/db')
+const {userOneId, userOne, setupDatabase, invalidUser} = require('./fixtures/db')
 
 beforeEach(setupDatabase)
 
@@ -107,4 +107,27 @@ test('Should not update invalid user fields', async () =>{
         .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
         .send({location: 'A location'})
         .expect(400)
+})
+
+test('Should not signup user with invalid name/email/password', async () => {
+    await request(app)
+        .post('/users')
+        .send({
+            name: invalidUser.name,
+            email: invalidUser.email,
+            password: invalidUser.password
+            })
+        .expect(400)
+    })
+
+test('Should not update user if unauthenticated', async () => {
+    await request(app)
+        .patch('/users/me')
+        .expect(401)
+})
+
+test('Should not delete user if unauthenticated', async () => {
+    await request(app)
+    .delete('/users/me')
+    .expect(401)
 })

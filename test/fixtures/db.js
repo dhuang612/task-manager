@@ -27,6 +27,12 @@ const userTwo = {
     }]
 }
 
+const invalidUser = {
+    "name": "This should not work",
+	"email": "auser@email.edu",
+	"password": "P@SS"
+}
+
 const taskOne = {
     _id: new mongoose.Types.ObjectId(),
     description: 'A new task',
@@ -52,7 +58,7 @@ const setupDatabase = async() => {
      //clear the db
      await User.deleteMany();
      await Task.deleteMany();
-     //create a user
+     //create new users
      await new User(userOne).save();
      await new User(userTwo).save();
      await new Task(taskOne).save();
@@ -65,6 +71,7 @@ module.exports = {
     userOne,
     userTwo,
     userTwoId,
+    invalidUser,
     taskOne,
     taskTwo,
     taskThree,
